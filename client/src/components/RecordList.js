@@ -1,28 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-function Record(props) {
+const Record = (props) =>  {
+    return(
     <tr>
-   <td>{props.record.name}</td>
-   <td>{props.record.position}</td>
-   <td>{props.record.level}</td>
-   <td>
-     <Link className="btn btn-link" to={`/edit/${props.record._id}`}>Edit</Link> |
-     <button className="btn btn-link"
-       onClick={() => {
-         props.deleteRecord(props.record._id);
-       }}
-     >
-       Delete
-     </button>
-   </td>
- </tr>
+      <td>{props.record.name}</td>
+      <td>{props.record.position}</td>
+      <td>{props.record.level}</td>
+      <td>
+        <Link className="btn btn-link" to={`/edit/${props.record._id}`}>Edit</Link>*
+        <button className="btn btn-link"
+          onClick={() => {
+            props.deleteRecord(props.record._id);
+          }}
+        >
+          Delete
+          </button>
+      </td>
+    </tr>
+    )
 };
 
 export default function RecordList() {
+    console.log("in record list");
     const [records, setRecords] = useState([]);
     //fetch records from db
     useEffect(() => {
+        console.log("IN USE EFFECT");
         async function getRecords() {
             const response = await fetch(`http://localhost:5000/record/`);
             if(!response.ok) {
@@ -32,6 +36,9 @@ export default function RecordList() {
             }
 
             const records = await response.json();
+
+			      console.log("response", records);
+
             setRecords(records);
         }
         getRecords();
@@ -47,9 +54,23 @@ export default function RecordList() {
         const newRecords = records.filter((el) => el.id !== id);
         setRecords(newRecords);
     }
+    /*let rec = []
+    records.map((record) => {
+          console.log("record", record)
+            return (
+              rec.push(
+                <Record
+                record={record}
+                deleteRecord={() => deleteRecord(record._id)}
+                key={record._id}
+              />)
+            );
+        });*/
 
     function recordList() {
+      console.log("in recordList");
         return records.map((record) => {
+          console.log("record", record)
             return (
                 <Record
                 record={record}
