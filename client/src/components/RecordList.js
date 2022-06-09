@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-function Record(props) {
-    <tr>
+const Record = (props) =>  {
+ <tr>
    <td>{props.record.name}</td>
    <td>{props.record.position}</td>
    <td>{props.record.level}</td>
@@ -21,17 +21,22 @@ function Record(props) {
 
 export default function RecordList() {
     const [records, setRecords] = useState([]);
+    console.log("records:", records);
     //fetch records from db
     useEffect(() => {
         async function getRecords() {
             const response = await fetch(`http://localhost:5000/record/`);
+
             if(!response.ok) {
                 const message = ` Error occured: ${response.statusText}`;
+                console.log(message);
                 window.alert(message);
                 return;
             }
 
             const records = await response.json();
+            console.log("records after response", records);
+
             setRecords(records);
         }
         getRecords();
@@ -55,7 +60,7 @@ export default function RecordList() {
                 record={record}
                 deleteRecord={() => deleteRecord(record._id)}
                 key={record._id}
-              />
+                />
             );
         });
     }
